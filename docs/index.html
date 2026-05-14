@@ -409,7 +409,7 @@
             padding: 16px 20px;
             border-radius: 8px;
             margin: 16px 0;
-            border-left: 3px solid;
+            /* border-left: 3px solid; */
             font-size: 14px;
         }
 
@@ -588,7 +588,6 @@
                     <a href="#cli" class="nav-link">CLI Generator</a>
                     <a href="#cron" class="nav-link">Cron Jobs</a>
                     <a href="#email" class="nav-link">Email</a>
-                    <a href="#logging" class="nav-link">Logging</a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-label">Deploy</div>
@@ -652,7 +651,7 @@
                 <h2>Directory Structure <a href="#structure" class="anchor">#</a></h2>
                 <pre><button class="copy-btn">Copy</button><code>api/
 ├── .htaccess                    <span class="cm">— URL rewriting (do not modify)</span>
-├── index.php                      <span class="cm">— Entry point</span>
+├── index.php                    <span class="cm">— Entry point</span>
 ├── config.php                   <span class="cm">— All configuration</span>
 ├── console.php                  <span class="cm">— CLI code generator</span>
 │
@@ -1425,52 +1424,6 @@ php /path/to/api/cron/my_job.php >> /path/to/logs/my_job.log 2>&1</code></pre>
                         <td>587</td>
                     </tr>
                 </table>
-            </div>
-
-            <!-- Logging -->
-            <div class="section" id="logging">
-                <h2>Logging <a href="#logging" class="anchor">#</a></h2>
-                <p>Only log write operations — never log GET or read requests.</p>
-                <table>
-                    <tr>
-                        <th>Action</th>
-                        <th>Log?</th>
-                    </tr>
-                    <tr>
-                        <td>Login / logout</td>
-                        <td style="color:var(--green)">✓ Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Failed login attempts</td>
-                        <td style="color:var(--green)">✓ Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Create, update, delete</td>
-                        <td style="color:var(--green)">✓ Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Status changes</td>
-                        <td style="color:var(--green)">✓ Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Import, backup</td>
-                        <td style="color:var(--green)">✓ Yes</td>
-                    </tr>
-                    <tr>
-                        <td>GET / list / view</td>
-                        <td style="color:var(--red)">✗ No</td>
-                    </tr>
-                    <tr>
-                        <td>Dashboard metrics</td>
-                        <td style="color:var(--red)">✗ No</td>
-                    </tr>
-                    <tr>
-                        <td>Dropdown fetches</td>
-                        <td style="color:var(--red)">✗ No</td>
-                    </tr>
-                </table>
-                <div class="callout callout-yellow">Call <code>LogService::purgeOlderThan($conn, 180)</code> from a
-                    weekly cron job to delete logs older than 6 months and prevent table bloat.</div>
             </div>
 
             <!-- Deployment -->

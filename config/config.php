@@ -35,7 +35,7 @@ return [
         'access_ttl'    => 900,        // access token lifetime  in seconds (15 min)
         'refresh_ttl'   => 604800,     // refresh token lifetime in seconds (7 days)
 
-        'cookie_prefix' => 'gmedaire',      // cookies will be named  app_access_token / app_refresh_token
+        'cookie_prefix' => 'app',      // cookies will be named  app_access_token / app_refresh_token
         'secure'        => false,       // set false for local http dev, true for production https
         'same_site'     => 'Strict',   // 'Strict' | 'Lax' | 'None'
     ],
@@ -58,7 +58,7 @@ return [
             'driver'   => 'mysqli',       // mysqli | pgsql | sqlsrv | sqlite
             'host'     => 'localhost',
             'port'     => 3306,
-            'name'     => 'database',
+            'name'     => 'ipadrbg',
             'user'     => 'root',
             'password' => '',
             'charset'  => 'utf8mb4',      // mysqli / pgsql only
@@ -109,10 +109,10 @@ return [
         'host'       => 'smtp.gmail.com', //'smtp.hostinger.com',
         'port'       => 587,
         'encryption' => 'tls',
-        'username'   =>  'support.gmedaireinc@gmail.com', //'noreply@yourdomain.com',   // your Hostinger email
-        'password'   => 'sbnvuxacrcmtjmdw',
-        'from_email' => 'support.gmedaireinc@gmail.com',
-        'from_name'  => 'GMEDAIRE SUPPORT',
+        'username'   =>  'snoreply@yourdomain.com', //'noreply@yourdomain.com',   // your Hostinger email
+        'password'   => '',
+        'from_email' => 'noreply@yourdomain.com',
+        'from_name'  => 'NOREPLY',
     ],
 
 ];

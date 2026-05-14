@@ -75,7 +75,8 @@ class TokenService
         return [
             'access_token'  => $accessToken,
             'refresh_token' => $refreshToken,
-            'expires_in'    => $this->accessTtl,
+            'expires_access'    => $this->accessTtl,
+            'expires_refresh'    => $this->refreshTtl,
             'token_type'    => 'Bearer',
         ];
     }

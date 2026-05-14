@@ -22,7 +22,6 @@ A lightweight, zero-dependency PHP REST API framework. No Composer, no external 
 - [CLI Generator](#cli-generator)
 - [Cron Jobs](#cron-jobs)
 - [Email](#email)
-- [Logging](#logging)
 - [Deployment](#deployment)
 - [Response Conventions](#response-conventions)
 
@@ -40,7 +39,7 @@ A lightweight, zero-dependency PHP REST API framework. No Composer, no external 
 ## Installation
 
 1. Copy all files to your server inside your API folder (e.g. `project/api/`)
-2. Make sure `.htaccess` is in the same folder as `api.php`
+2. Make sure `.htaccess` is in the same folder as `index.php`
 3. Edit `config.php` and fill in your database credentials and JWT secret
 4. Done — no build step, no dependency install
 
@@ -93,7 +92,8 @@ api/
 │   └── PasswordResetService.php — password reset and activation
 │
 └── cron/
-    └── sample_job.php           — example cron job (start here)
+    ├── sample_job.php           — example cron job (start here)
+    └── expire_cylinders.php     — example scheduled task
 ```
 
 ---
@@ -165,7 +165,7 @@ return [
 
 ## Routing
 
-The `.htaccess` routes all requests to `api.php`. The Router maps the URL to a controller file and calls the matching method.
+The `.htaccess` routes all requests to `index.php`. The Router maps the URL to a controller file and calls the matching method.
 
 ### URL Shapes
 
@@ -934,27 +934,6 @@ Common SMTP providers:
 | Mailgun  | smtp.mailgun.org    | 587  |
 | Any host | smtp.yourdomain.com | 587  |
 
----
-
-## Logging
-
-Only write operations should be logged — never log GET or read requests.
-
-| Action                 | Log? |
-| ---------------------- | ---- |
-| Login / logout         | Yes  |
-| Failed login attempts  | Yes  |
-| Create, update, delete | Yes  |
-| Status changes         | Yes  |
-| Import, backup         | Yes  |
-| GET / list / view      | No   |
-| Dashboard metrics      | No   |
-| Dropdown fetches       | No   |
-
-Call `LogService::purgeOlderThan($conn, 180)` from a weekly cron job to delete logs older than 6 months and prevent table bloat.
-
----
-
 ## Deployment
 
 ### Steps
@@ -982,7 +961,7 @@ If using Nginx instead of Apache, add this rewrite rule to your server block:
 
 ```nginx
 location /api/ {
-    try_files $uri $uri/ /api/api.php?x=$uri&$args;
+    try_files $uri $uri/ /api/index.php?x=$uri&$args;
 }
 ```
 
