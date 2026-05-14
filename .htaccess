@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+	CGIPassAuth On
+    RewriteEngine On
+
+	RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-s
+	RewriteRule ^(.*)$ index.php?x=$1 [QSA,NC,L]
+
+	RewriteCond %{REQUEST_FILENAME} -d
+	RewriteRule ^(.*)$ index.php [QSA,NC,L]
+
+	RewriteCond %{REQUEST_FILENAME} -s
+	RewriteRule ^(.*)$ index.php [QSA,NC,L]	 
+
+	RewriteCond %{HTTP:Authorization} ^(.*)
+	RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+</IfModule>
+
