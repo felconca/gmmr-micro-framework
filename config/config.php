@@ -58,7 +58,7 @@ return [
             'driver'   => 'mysqli',       // mysqli | pgsql | sqlsrv | sqlite
             'host'     => 'localhost',
             'port'     => 3306,
-            'name'     => 'ipadrbg',
+            'name'     => 'sample',
             'user'     => 'root',
             'password' => '',
             'charset'  => 'utf8mb4',      // mysqli / pgsql only
