@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP API Micro-Framework — Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0f14;
+            --bg2: #13161e;
+            --bg3: #1a1e28;
+            --border: #252a37;
+            --accent: #4f8ef7;
+            --accent2: #7c3aed;
+            --green: #34d399;
+            --red: #f87171;
+            --yellow: #fbbf24;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --code-bg: #0a0c10;
+            --sidebar-w: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* ── Layout ── */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: var(--sidebar-w);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-logo h1 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .sidebar-logo p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .sidebar nav {
+            padding: 12px 0;
+            flex: 1;
+        }
+
+        .nav-group {
+            margin-bottom: 4px;
+        }
+
+        .nav-group-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 8px 20px 4px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 7px 20px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            transition: all .15s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            background: var(--bg3);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+            background: rgba(79, 142, 247, .08);
+        }
+
+        /* ── Main ── */
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            max-width: 900px;
+            padding: 60px 56px 120px;
+        }
+
+        /* ── Sections ── */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-hero {
+            padding: 48px 0 40px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 60px;
+        }
+
+        .section-hero h1 {
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #e2e8f0 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .section-hero p {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 560px;
+        }
+
+        .pills {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        .pill-blue {
+            color: var(--accent);
+            border-color: rgba(79, 142, 247, .3);
+            background: rgba(79, 142, 247, .08);
+        }
+
+        .pill-green {
+            color: var(--green);
+            border-color: rgba(52, 211, 153, .3);
+            background: rgba(52, 211, 153, .08);
+        }
+
+        .pill-purple {
+            color: #a78bfa;
+            border-color: rgba(167, 139, 250, .3);
+            background: rgba(167, 139, 250, .08);
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            padding-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 .anchor {
+            color: var(--muted);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        h2:hover .anchor {
+            opacity: 1;
+        }
+
+        h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin: 28px 0 12px;
+        }
+
+        p {
+            color: #94a3b8;
+            margin-bottom: 14px;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Code ── */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            overflow-x: auto;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        pre code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            line-height: 1.65;
+            color: #c4cfe6;
+        }
+
+        code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12.5px;
+            background: rgba(79, 142, 247, .1);
+            color: var(--accent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(79, 142, 247, .2);
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 11px;
+            font-family: 'Sora', sans-serif;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .copy-btn:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
+        .copy-btn.copied {
+            color: var(--green);
+            border-color: var(--green);
+        }
+
+        /* ── Syntax highlight helpers ── */
+        .kw {
+            color: #c792ea;
+        }
+
+        .fn {
+            color: #82aaff;
+        }
+
+        .str {
+            color: #c3e88d;
+        }
+
+        .cm {
+            color: #546e7a;
+            font-style: italic;
+        }
+
+        .num {
+            color: #f78c6c;
+        }
+
+        .cl {
+            color: #ffcb6b;
+        }
+
+        .var {
+            color: #89ddff;
+        }
+
+        /* ── Tables ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13.5px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 14px;
+            background: var(--bg3);
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            color: #94a3b8;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, .02);
+        }
+
+        table {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* ── Lists ── */
+        ul,
+        ol {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        li {
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        li code {
+            font-size: 12px;
+        }
+
+        /* ── Callouts ── */
+        .callout {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 16px 0;
+            border-left: 3px solid;
+            font-size: 14px;
+        }
+
+        .callout-blue {
+            background: rgba(79, 142, 247, .07);
+            border-color: var(--accent);
+            color: #93c5fd;
+        }
+
+        .callout-yellow {
+            background: rgba(251, 191, 36, .07);
+            border-color: var(--yellow);
+            color: #fde68a;
+        }
+
+        .callout-green {
+            background: rgba(52, 211, 153, .07);
+            border-color: var(--green);
+            color: #6ee7b7;
+        }
+
+        .callout-red {
+            background: rgba(248, 113, 113, .07);
+            border-color: var(--red);
+            color: #fca5a5;
+        }
+
+        .callout strong {
+            color: inherit;
+        }
+
+        /* ── URL shape boxes ── */
+        .url-shapes {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .url-shape {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .url-shape .label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--muted);
+            min-width: 50px;
+        }
+
+        .url-shape .url {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .url-shape .url .seg-version {
+            color: #fbbf24;
+        }
+
+        .url-shape .url .seg-folder {
+            color: #34d399;
+        }
+
+        .url-shape .url .seg-file {
+            color: var(--accent);
+        }
+
+        .url-shape .url .seg-method {
+            color: #c792ea;
+        }
+
+        .url-shape .url .seg-query {
+            color: var(--muted);
+        }
+
+        /* ── Method badges ── */
+        .method {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .method-get {
+            background: rgba(52, 211, 153, .15);
+            color: var(--green);
+        }
+
+        .method-post {
+            background: rgba(79, 142, 247, .15);
+            color: var(--accent);
+        }
+
+        .method-put {
+            background: rgba(251, 191, 36, .15);
+            color: var(--yellow);
+        }
+
+        .method-delete {
+            background: rgba(248, 113, 113, .15);
+            color: var(--red);
+        }
+
+        /* ── Divider ── */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* ── Scroll spy ── */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 32px 24px 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- ── Sidebar ── -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="badge">PHP 8.1+</div>
+                <h1>PHP API<br>Micro-Framework</h1>
+                <p>Zero dependencies · No Composer</p>
+            </div>
+            <nav>
+                <div class="nav-group">
+                    <div class="nav-group-label">Getting Started</div>
+                    <a href="#requirements" class="nav-link">Requirements</a>
+                    <a href="#installation" class="nav-link">Installation</a>
+                    <a href="#structure" class="nav-link">Directory Structure</a>
+                    <a href="#configuration" class="nav-link">Configuration</a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-label">Core</div>
+                    <a href="#routing" class="nav-link">Routing</a>
+                    <a href="#controllers" class="nav-link">Controllers</a>
+                    <a href="#request" class="nav-link">Request</a>
+                    <a href="#response" class="nav-link">Response</a>
+                    <a href="#validation" class="nav-link">Validation</a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-label">Auth</div>
+                    <a href="#jwt" class="nav-link">JWT Tokens</a>
+                    <a href="#middleware" class="nav-link">Middleware</a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-label">Data</div>
+                    <a href="#database" class="nav-link">Database</a>
+                    <a href="#services" class="nav-link">Services</a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-label">Tools</div>
+                    <a href="#cli" class="nav-link">CLI Generator</a>
+                    <a href="#cron" class="nav-link">Cron Jobs</a>
+                    <a href="#email" class="nav-link">Email</a>
+                    <a href="#logging" class="nav-link">Logging</a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-label">Deploy</div>
+                    <a href="#deployment" class="nav-link">Deployment</a>
+                    <a href="#conventions" class="nav-link">Conventions</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- ── Main ── -->
+        <main class="main">
+
+            <!-- Hero -->
+            <div class="section-hero">
+                <h1>PHP API Micro-Framework</h1>
+                <p>A lightweight, zero-dependency REST API framework. No Composer, no external libraries — pure PHP
+                    8.1+. Works on any shared hosting, VPS, or local environment.</p>
+                <div class="pills">
+                    <span class="pill pill-blue">PHP 8.1+</span>
+                    <span class="pill pill-green">No Composer</span>
+                    <span class="pill pill-green">No Dependencies</span>
+                    <span class="pill pill-purple">JWT Auth</span>
+                    <span class="pill pill-purple">Multi-DB</span>
+                </div>
+            </div>
+
+            <!-- Requirements -->
+            <div class="section" id="requirements">
+                <h2>Requirements <a href="#requirements" class="anchor">#</a></h2>
+                <ul>
+                    <li>PHP <strong>8.1 or higher</strong></li>
+                    <li>MySQLi extension enabled</li>
+                    <li>Apache with <code>mod_rewrite</code> enabled (or Nginx with equivalent rewrite rules)</li>
+                    <li>No Composer required</li>
+                </ul>
+            </div>
+
+            <!-- Installation -->
+            <div class="section" id="installation">
+                <h2>Installation <a href="#installation" class="anchor">#</a></h2>
+                <ol>
+                    <li>Copy all files to your server inside your API folder (e.g. <code>project/api/</code>)</li>
+                    <li>Make sure <code>.htaccess</code> is in the same folder as <code>index.php</code></li>
+                    <li>Edit <code>config.php</code> and fill in your database credentials and JWT secret</li>
+                    <li>Done — no build step, no dependency install</li>
+                </ol>
+                <pre><button class="copy-btn">Copy</button><code>project/
+└── api/
+    ├── .htaccess
+    ├── index.php
+    ├── config.php
+    ├── console.php
+    ├── core/
+    ├── controllers/
+    ├── services/
+    └── cron/</code></pre>
+            </div>
+
+            <!-- Directory Structure -->
+            <div class="section" id="structure">
+                <h2>Directory Structure <a href="#structure" class="anchor">#</a></h2>
+                <pre><button class="copy-btn">Copy</button><code>api/
+├── .htaccess                    <span class="cm">— URL rewriting (do not modify)</span>
+├── index.php                      <span class="cm">— Entry point</span>
+├── config.php                   <span class="cm">— All configuration</span>
+├── console.php                  <span class="cm">— CLI code generator</span>
+│
+├── core/
+│   ├── Request.php              <span class="cm">— Input parsing and validation</span>
+│   ├── Response.php             <span class="cm">— JSON output helpers</span>
+│   ├── Router.php               <span class="cm">— URL to controller dispatch</span>
+│   ├── BaseController.php       <span class="cm">— Shared DB, config, token access</span>
+│   ├── Middleware.php           <span class="cm">— Auth, role, method guards</span>
+│   ├── TokenService.php         <span class="cm">— JWT generate and verify (HS256)</span>
+│   └── ValidationException.php
+│
+├── controllers/
+│   ├── sample.php               <span class="cm">— example flat controller</span>
+│   └── v1/
+│       ├── auth/
+│       │   └── login.php        <span class="cm">→ LoginController</span>
+│       └── orders/
+│           └── orders.php       <span class="cm">→ OrdersController</span>
+│
+├── services/
+│   ├── SampleService.php        <span class="cm">— example service (start here)</span>
+│   ├── LoginService.php         <span class="cm">— login attempts, IP, device</span>
+│   ├── LogService.php           <span class="cm">— user activity logging</span>
+│   ├── MailService.php          <span class="cm">— raw SMTP email sender</span>
+│   └── PasswordResetService.php <span class="cm">— password reset and activation</span>
+│
+└── cron/
+    ├── sample_job.php           <span class="cm">— example cron job (start here)</span>
+    └── expire_cylinders.php     <span class="cm">— example scheduled task</span></code></pre>
+            </div>
+
+            <!-- Configuration -->
+            <div class="section" id="configuration">
+                <h2>Configuration <a href="#configuration" class="anchor">#</a></h2>
+                <p>All settings live in <code>config.php</code>. This is the only file you need to edit before
+                    deploying.</p>
+                <pre><button class="copy-btn">Copy</button><code><span class="kw">return</span> [
+
+    <span class="str">'timezone'</span> => <span class="str">'Asia/Manila'</span>,
+
+    <span class="str">'app'</span> => [
+        <span class="str">'name'</span>  => <span class="str">'My API'</span>,
+        <span class="str">'debug'</span> => <span class="kw">false</span>,   <span class="cm">// true shows full errors — dev only</span>
+    ],
+
+    <span class="str">'jwt'</span> => [
+        <span class="cm">// Generate: php -r "echo bin2hex(random_bytes(32));"</span>
+        <span class="str">'secret'</span>        => <span class="str">'your-long-random-secret-here'</span>,
+        <span class="str">'access_ttl'</span>    => <span class="num">900</span>,      <span class="cm">// 15 minutes</span>
+        <span class="str">'refresh_ttl'</span>   => <span class="num">604800</span>,   <span class="cm">// 7 days</span>
+        <span class="str">'cookie_prefix'</span> => <span class="str">'app'</span>,
+        <span class="str">'secure'</span>        => <span class="kw">true</span>,    <span class="cm">// false for local HTTP</span>
+        <span class="str">'same_site'</span>     => <span class="str">'Strict'</span>,
+    ],
+
+    <span class="str">'db_default'</span> => <span class="str">'primary'</span>,
+
+    <span class="str">'databases'</span> => [
+        <span class="str">'primary'</span> => [
+            <span class="str">'driver'</span>   => <span class="str">'mysqli'</span>,   <span class="cm">// mysqli | pgsql | sqlsrv | sqlite</span>
+            <span class="str">'host'</span>     => <span class="str">'localhost'</span>,
+            <span class="str">'port'</span>     => <span class="num">3306</span>,
+            <span class="str">'name'</span>     => <span class="str">'my_database'</span>,
+            <span class="str">'user'</span>     => <span class="str">'db_user'</span>,
+            <span class="str">'password'</span> => <span class="str">'db_password'</span>,
+            <span class="str">'charset'</span>  => <span class="str">'utf8mb4'</span>,
+        ],
+    ],
+
+    <span class="str">'mail'</span> => [
+        <span class="str">'driver'</span>     => <span class="str">'smtp'</span>,
+        <span class="str">'host'</span>       => <span class="str">'smtp.yourmailserver.com'</span>,
+        <span class="str">'port'</span>       => <span class="num">587</span>,
+        <span class="str">'encryption'</span> => <span class="str">'tls'</span>,
+        <span class="str">'username'</span>   => <span class="str">'noreply@yourdomain.com'</span>,
+        <span class="str">'password'</span>   => <span class="str">'your_email_password'</span>,
+        <span class="str">'from_email'</span> => <span class="str">'noreply@yourdomain.com'</span>,
+        <span class="str">'from_name'</span>  => <span class="str">'My App'</span>,
+    ],
+
+    <span class="str">'cors'</span> => [
+        <span class="str">'allowed_origins'</span>   => <span class="str">'*'</span>,
+        <span class="str">'allowed_methods'</span>   => <span class="str">'GET, POST, PUT, PATCH, DELETE, OPTIONS'</span>,
+        <span class="str">'allowed_headers'</span>   => <span class="str">'Content-Type, X-Auth-Token, Origin, Authorization'</span>,
+        <span class="str">'allow_credentials'</span> => <span class="kw">true</span>,
+    ],
+];</code></pre>
+            </div>
+
+            <!-- Routing -->
+            <div class="section" id="routing">
+                <h2>Routing <a href="#routing" class="anchor">#</a></h2>
+                <p>The <code>.htaccess</code> routes all requests to <code>index.php</code>. The Router maps the URL to
+                    a
+                    controller file and calls the matching method.</p>
+
+                <h3>URL Shapes</h3>
+                <p>All three formats are supported and can be mixed freely:</p>
+
+                <div class="url-shapes">
+                    <div class="url-shape">
+                        <span class="label">Deep</span>
+                        <span class="url">/api/<span class="seg-version">{version}</span>/<span
+                                class="seg-folder">{folder}</span>/<span class="seg-file">{file}.php</span>/<span
+                                class="seg-method">{method}</span><span class="seg-query">?param=value</span></span>
+                    </div>
+                    <div class="url-shape">
+                        <span class="label">Mid</span>
+                        <span class="url">/api/<span class="seg-version">{version}</span>/<span
+                                class="seg-file">{file}.php</span>/<span class="seg-method">{method}</span><span
+                                class="seg-query">?param=value</span></span>
+                    </div>
+                    <div class="url-shape">
+                        <span class="label">Flat</span>
+                        <span class="url">/api/<span class="seg-file">{file}.php</span>/<span
+                                class="seg-method">{method}</span><span class="seg-query">?param=value</span></span>
+                    </div>
+                </div>
+
+                <h3>Examples</h3>
+                <table>
+                    <tr>
+                        <th>HTTP</th>
+                        <th>URL</th>
+                        <th>File</th>
+                        <th>Method</th>
+                    </tr>
+                    <tr>
+                        <td><span class="method method-post">POST</span></td>
+                        <td>/api/v1/auth/login.php/login</td>
+                        <td>controllers/v1/auth/login.php</td>
+                        <td>login()</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method method-get">GET</span></td>
+                        <td>/api/v1/orders/orders.php/list</td>
+                        <td>controllers/v1/orders/orders.php</td>
+                        <td>list()</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method method-get">GET</span></td>
+                        <td>/api/v1/cylinders.php/list</td>
+                        <td>controllers/v1/cylinders.php</td>
+                        <td>list()</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method method-post">POST</span></td>
+                        <td>/api/auth.php/login</td>
+                        <td>controllers/auth.php</td>
+                        <td>login()</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method method-get">GET</span></td>
+                        <td>/api/users.php/list</td>
+                        <td>controllers/users.php</td>
+                        <td>list()</td>
+                    </tr>
+                    <tr>
+                        <td><span class="method method-delete">DELETE</span></td>
+                        <td>/api/orders.php/delete</td>
+                        <td>controllers/orders.php</td>
+                        <td>delete()</td>
+                    </tr>
+                </table>
+
+                <h3>Rules</h3>
+                <ul>
+                    <li>The version segment (<code>v1</code>, <code>v2</code>, <code>version1</code>) is just a folder —
+                        name it anything</li>
+                    <li><code>.php</code> in the URL is optional — <code>/login.php/login</code> and
+                        <code>/login/login</code> both work
+                    </li>
+                    <li>Query string params (<code>?page=1&limit=50</code>) always work on any URL shape</li>
+                    <li>File name maps to class name: <code>login.php</code> → <code>LoginController</code>,
+                        <code>user_profile.php</code> → <code>UserProfileController</code>
+                    </li>
+                </ul>
+
+                <h3>Folder vs URL</h3>
+                <pre><button class="copy-btn">Copy</button><code>controllers/
+├── users.php              →  /api/users.php/list
+├── orders.php             →  /api/orders.php/list
+└── v1/
+    ├── auth.php           →  /api/v1/auth.php/login
+    ├── cylinders.php      →  /api/v1/cylinders.php/list
+    └── finance/
+        └── invoices.php   →  /api/v1/finance/invoices.php/create</code></pre>
+            </div>
+
+            <!-- Controllers -->
+            <div class="section" id="controllers">
+                <h2>Controllers <a href="#controllers" class="anchor">#</a></h2>
+                <p>Every controller extends <code>BaseController</code> and lives in the <code>controllers/</code>
+                    folder.</p>
+
+                <h3>Minimal Controller</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="kw"><?php</span>
+
+<span class="fn">require_once</span> __DIR__ . <span class="str">'/../core/BaseController.php'</span>;
+
+<span class="kw">class</span> <span class="cl">UsersController</span> <span class="kw">extends</span> <span class="cl">BaseController</span>
+{
+    <span class="kw">public function</span> <span class="fn">list</span>(<span class="cl">Request</span> <span class="var">$request</span>, <span class="cl">Response</span> <span class="var">$response</span>): <span class="kw">void</span>
+    {
+        <span class="cl">Middleware</span>::<span class="fn">method</span>(<span class="str">'GET'</span>, <span class="var">$request</span>, <span class="var">$response</span>);
+        <span class="var">$user</span> = <span class="cl">Middleware</span>::<span class="fn">auth</span>(<span class="var">$request</span>, <span class="var">$response</span>);
+
+        <span class="kw">try</span> {
+            <span class="var">$conn</span> = <span class="var">$this</span>-><span class="fn">db</span>();
+            <span class="var">$stmt</span> = <span class="var">$conn</span>-><span class="fn">prepare</span>(<span class="str">"SELECT id, name, email FROM users WHERE deleted = 0"</span>);
+            <span class="var">$stmt</span>-><span class="fn">execute</span>();
+            <span class="var">$rows</span> = <span class="var">$stmt</span>-><span class="fn">get_result</span>()-><span class="fn">fetch_all</span>(MYSQLI_ASSOC);
+            <span class="var">$stmt</span>-><span class="fn">close</span>();
+
+            <span class="var">$response</span>(<span class="var">$rows</span>, <span class="num">200</span>);
+
+        } <span class="kw">catch</span> (<span class="cl">Throwable</span> <span class="var">$e</span>) {
+            <span class="var">$response</span>([<span class="str">'error'</span> => <span class="kw">true</span>, <span class="str">'message'</span> => <span class="var">$e</span>-><span class="fn">getMessage</span>()], <span class="num">500</span>);
+        }
+    }
+}</code></pre>
+
+                <h3>require_once Depth</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm">// controllers/orders.php              (1 level deep)</span>
+<span class="fn">require_once</span> __DIR__ . <span class="str">'/../core/BaseController.php'</span>;
+
+<span class="cm">// controllers/v1/orders.php           (2 levels deep)</span>
+<span class="fn">require_once</span> __DIR__ . <span class="str">'/../../core/BaseController.php'</span>;
+
+<span class="cm">// controllers/v1/finance/invoices.php (3 levels deep)</span>
+<span class="fn">require_once</span> __DIR__ . <span class="str">'/../../core/BaseController.php'</span>;</code></pre>
+
+                <div class="callout callout-blue">The CLI generator calculates the correct path automatically — use it
+                    to avoid mistakes.</div>
+            </div>
+
+            <!-- Request -->
+            <div class="section" id="request">
+                <h2>Request <a href="#request" class="anchor">#</a></h2>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm">// GET query string: ?page=1&limit=50</span>
+<span class="var">$page</span>  = <span class="var">$request</span>-><span class="fn">query</span>(<span class="str">'page'</span>, <span class="num">1</span>);
+<span class="var">$limit</span> = <span class="var">$request</span>-><span class="fn">query</span>(<span class="str">'limit'</span>, <span class="num">50</span>);
+
+<span class="cm">// POST / JSON body</span>
+<span class="var">$name</span>  = <span class="var">$request</span>-><span class="fn">input</span>(<span class="str">'name'</span>);
+<span class="var">$email</span> = <span class="var">$request</span>-><span class="fn">input</span>(<span class="str">'email'</span>, <span class="str">''</span>);
+
+<span class="cm">// All body data</span>
+<span class="var">$all</span> = <span class="var">$request</span>-><span class="fn">all</span>();
+
+<span class="cm">// HTTP method</span>
+<span class="var">$method</span> = <span class="var">$request</span>-><span class="fn">method</span>();   <span class="cm">// 'GET', 'POST', 'PUT'…</span>
+
+<span class="cm">// Request header</span>
+<span class="var">$auth</span> = <span class="var">$request</span>-><span class="fn">header</span>(<span class="str">'Authorization'</span>);
+
+<span class="cm">// URL segment param e.g. /orders/123 → param0 = 123</span>
+<span class="var">$id</span> = <span class="var">$request</span>-><span class="fn">param</span>(<span class="str">'param0'</span>);</code></pre>
+
+                <div class="callout callout-blue">
+                    <strong>GET vs POST:</strong> GET and DELETE read from the query string. POST, PUT, PATCH read from
+                    the request body (JSON or form-encoded). <code>validate()</code> and <code>all()</code>
+                    automatically read the correct source.
+                </div>
+            </div>
+
+            <!-- Response -->
+            <div class="section" id="response">
+                <h2>Response <a href="#response" class="anchor">#</a></h2>
+                <p>The response object is callable — invoke it like a function:</p>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$response</span>(<span class="var">$data</span>, <span class="num">200</span>);
+<span class="var">$response</span>([<span class="str">'success'</span> => <span class="kw">true</span>, <span class="str">'id'</span> => <span class="var">$newId</span>], <span class="num">201</span>);
+
+<span class="cm">// Shorthand helpers</span>
+<span class="var">$response</span>-><span class="fn">ok</span>(<span class="var">$data</span>);            <span class="cm">// 200</span>
+<span class="var">$response</span>-><span class="fn">created</span>(<span class="var">$data</span>);       <span class="cm">// 201</span>
+<span class="var">$response</span>-><span class="fn">noContent</span>();          <span class="cm">// 204</span>
+<span class="var">$response</span>-><span class="fn">badRequest</span>(<span class="var">$data</span>);    <span class="cm">// 400</span>
+<span class="var">$response</span>-><span class="fn">unauthorized</span>(<span class="var">$data</span>);  <span class="cm">// 401</span>
+<span class="var">$response</span>-><span class="fn">forbidden</span>(<span class="var">$data</span>);     <span class="cm">// 403</span>
+<span class="var">$response</span>-><span class="fn">notFound</span>(<span class="var">$data</span>);      <span class="cm">// 404</span>
+<span class="var">$response</span>-><span class="fn">error</span>(<span class="var">$data</span>);         <span class="cm">// 500</span></code></pre>
+
+                <div class="callout callout-yellow">
+                    <strong>Rules:</strong> HTTP status code always goes in the second argument — never as a key inside
+                    the array. Never add <code>status</code> as a key inside the response. <code>$response()</code>
+                    always exits — no code runs after it.
+                </div>
+            </div>
+
+            <!-- Validation -->
+            <div class="section" id="validation">
+                <h2>Validation <a href="#validation" class="anchor">#</a></h2>
+                <p>Call <code>$request->validate()</code> with a rules array. Throws <code>ValidationException</code> on
+                    failure (auto-caught → 422). Returns all input merged with validated fields on success.</p>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$data</span> = <span class="var">$request</span>-><span class="fn">validate</span>([
+    <span class="str">'name'</span>      => <span class="str">'required|min:2|max:100'</span>,
+    <span class="str">'email'</span>     => <span class="str">'required|email'</span>,
+    <span class="str">'age'</span>       => <span class="str">'required|integer|min:1'</span>,
+    <span class="str">'price'</span>     => <span class="str">'required|float'</span>,
+    <span class="str">'status'</span>    => <span class="str">'required|in:active,pending,disabled'</span>,
+    <span class="str">'role'</span>      => <span class="str">'not_in:superadmin'</span>,
+    <span class="str">'website'</span>   => <span class="str">'url'</span>,
+    <span class="str">'dob'</span>       => <span class="str">'required|date'</span>,         <span class="cm">// Y-m-d</span>
+    <span class="str">'scheduled'</span> => <span class="str">'required|datetime'</span>,     <span class="cm">// Y-m-d H:i:s</span>
+    <span class="str">'opens_at'</span>  => <span class="str">'required|time'</span>,         <span class="cm">// H:i or H:i:s</span>
+    <span class="str">'start'</span>     => <span class="str">'after:2024-01-01'</span>,
+    <span class="str">'end'</span>       => <span class="str">'before:2030-12-31'</span>,
+    <span class="str">'notes'</span>     => <span class="str">''</span>,                      <span class="cm">// optional, no rules</span>
+]);</code></pre>
+
+                <h3>All Rules</h3>
+                <table>
+                    <tr>
+                        <th>Rule</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>required</td>
+                        <td>Must be present and not empty</td>
+                    </tr>
+                    <tr>
+                        <td>string</td>
+                        <td>Must be a string</td>
+                    </tr>
+                    <tr>
+                        <td>numeric</td>
+                        <td>Must be a number</td>
+                    </tr>
+                    <tr>
+                        <td>integer</td>
+                        <td>Must be a whole number</td>
+                    </tr>
+                    <tr>
+                        <td>float</td>
+                        <td>Must be a decimal number</td>
+                    </tr>
+                    <tr>
+                        <td>boolean</td>
+                        <td>Must be true / false / 1 / 0</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>Valid email format</td>
+                    </tr>
+                    <tr>
+                        <td>url</td>
+                        <td>Valid URL format</td>
+                    </tr>
+                    <tr>
+                        <td>alpha</td>
+                        <td>Letters only</td>
+                    </tr>
+                    <tr>
+                        <td>alpha_num</td>
+                        <td>Letters and numbers only</td>
+                    </tr>
+                    <tr>
+                        <td>alpha_dash</td>
+                        <td>Letters, numbers, dashes, underscores</td>
+                    </tr>
+                    <tr>
+                        <td>min:{n}</td>
+                        <td>Length / value / array count >= n</td>
+                    </tr>
+                    <tr>
+                        <td>max:{n}</td>
+                        <td>Length / value / array count <= n</td>
+                    </tr>
+                    <tr>
+                        <td>in:{a},{b}</td>
+                        <td>Value must be one of the listed options</td>
+                    </tr>
+                    <tr>
+                        <td>not_in:{a},{b}</td>
+                        <td>Value must NOT be one of the listed options</td>
+                    </tr>
+                    <tr>
+                        <td>date</td>
+                        <td>Valid date Y-m-d</td>
+                    </tr>
+                    <tr>
+                        <td>datetime</td>
+                        <td>Valid datetime Y-m-d H:i:s</td>
+                    </tr>
+                    <tr>
+                        <td>time</td>
+                        <td>Valid time H:i or H:i:s</td>
+                    </tr>
+                    <tr>
+                        <td>before:{date}</td>
+                        <td>Must be before the given date</td>
+                    </tr>
+                    <tr>
+                        <td>after:{date}</td>
+                        <td>Must be after the given date</td>
+                    </tr>
+                    <tr>
+                        <td>regex:{pattern}</td>
+                        <td>Must match the given regex pattern</td>
+                    </tr>
+                    <tr>
+                        <td>array</td>
+                        <td>Must be an array</td>
+                    </tr>
+                </table>
+
+                <h3>Optional Fields</h3>
+                <p>Fields without <code>required</code> are fully skipped when not present in the payload:</p>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$data</span> = <span class="var">$request</span>-><span class="fn">validate</span>([
+    <span class="str">'id'</span>     => <span class="str">'required|numeric|min:1'</span>,  <span class="cm">// always validated</span>
+    <span class="str">'notes'</span>  => <span class="str">'string'</span>,                  <span class="cm">// only validated IF sent</span>
+    <span class="str">'date'</span>   => <span class="str">'date'</span>,                    <span class="cm">// only validated IF sent</span>
+]);</code></pre>
+
+                <h3>Array & Wildcard Validation</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$data</span> = <span class="var">$request</span>-><span class="fn">validate</span>([
+    <span class="str">'items'</span>          => <span class="str">'required|array|min:1'</span>,
+    <span class="str">'items.*.id'</span>     => <span class="str">'required|integer|min:1'</span>,
+    <span class="str">'items.*.qty'</span>    => <span class="str">'required|numeric|min:1'</span>,
+    <span class="str">'items.*.status'</span> => <span class="str">'required|in:pending,approved'</span>,
+]);</code></pre>
+            </div>
+
+            <!-- JWT -->
+            <div class="section" id="jwt">
+                <h2>Authentication & JWT <a href="#jwt" class="anchor">#</a></h2>
+                <p>Pure PHP HS256 JWT — no external library needed.</p>
+
+                <h3>Issue Tokens on Login</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$tokens</span> = <span class="var">$this</span>-><span class="fn">tokens</span>()-><span class="fn">issue</span>([
+    <span class="str">'id'</span>       => <span class="var">$user</span>[<span class="str">'id'</span>],
+    <span class="str">'username'</span> => <span class="var">$user</span>[<span class="str">'username'</span>],
+    <span class="str">'role'</span>     => <span class="var">$user</span>[<span class="str">'role'</span>],
+]);
+
+<span class="cm">// Written to HttpOnly cookies automatically.
+// Also returned in response body for mobile clients.</span>
+<span class="var">$response</span>([<span class="str">'message'</span> => <span class="str">'Login successful'</span>, <span class="str">'tokens'</span> => <span class="var">$tokens</span>], <span class="num">200</span>);</code></pre>
+
+                <h3>Token via Authorization Header (Mobile)</h3>
+                <pre><button class="copy-btn">Copy</button><code>Authorization: Bearer &lt;access_token&gt;</code></pre>
+                <p>The framework checks the <code>Authorization</code> header first, then falls back to the cookie.
+                    Browser and mobile clients both work from the same API.</p>
+
+                <h3>Refresh & Revoke</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$tokens</span> = <span class="var">$this</span>-><span class="fn">tokens</span>()-><span class="fn">refresh</span>();      <span class="cm">// new pair from refresh token</span>
+<span class="var">$this</span>-><span class="fn">tokens</span>()-><span class="fn">revoke</span>();               <span class="cm">// clear both cookies</span>
+<span class="var">$payload</span> = <span class="var">$this</span>-><span class="fn">tokens</span>()-><span class="fn">verifyFromCookie</span>();  <span class="cm">// verify without reissuing</span></code></pre>
+            </div>
+
+            <!-- Middleware -->
+            <div class="section" id="middleware">
+                <h2>Middleware <a href="#middleware" class="anchor">#</a></h2>
+                <p>All guards are static — call them at the top of any controller method.</p>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm">// Enforce HTTP method — sends 405 if wrong</span>
+<span class="cl">Middleware</span>::<span class="fn">method</span>(<span class="str">'POST'</span>, <span class="var">$request</span>, <span class="var">$response</span>);
+
+<span class="cm">// Require valid token — sends 401 if missing/invalid
+// Returns decoded token payload</span>
+<span class="var">$user</span> = <span class="cl">Middleware</span>::<span class="fn">auth</span>(<span class="var">$request</span>, <span class="var">$response</span>);
+<span class="cm">// $user['id'], $user['username'], $user['role']</span>
+
+<span class="cm">// Require specific role — sends 403 if no match</span>
+<span class="var">$user</span> = <span class="cl">Middleware</span>::<span class="fn">role</span>([<span class="str">'admin'</span>, <span class="str">'superadmin'</span>], <span class="var">$request</span>, <span class="var">$response</span>);
+
+<span class="cm">// Block logged-in users — sends 403 if token present</span>
+<span class="cl">Middleware</span>::<span class="fn">guest</span>(<span class="var">$request</span>, <span class="var">$response</span>);</code></pre>
+            </div>
+
+            <!-- Database -->
+            <div class="section" id="database">
+                <h2>Database <a href="#database" class="anchor">#</a></h2>
+
+                <h3>Connect</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$conn</span> = <span class="var">$this</span>-><span class="fn">db</span>();               <span class="cm">// default (db_default in config)</span>
+<span class="var">$conn</span> = <span class="var">$this</span>-><span class="fn">db</span>(<span class="str">'secondary'</span>);    <span class="cm">// named connection</span>
+<span class="var">$conn</span> = <span class="var">$this</span>-><span class="fn">db</span>(<span class="var">$request</span>-><span class="fn">input</span>(<span class="str">'db'</span>));  <span class="cm">// dynamic from request</span></code></pre>
+
+                <h3>Prepared Statements</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm">// SELECT one row</span>
+<span class="var">$stmt</span> = <span class="var">$conn</span>-><span class="fn">prepare</span>(<span class="str">"SELECT * FROM users WHERE id = ? LIMIT 1"</span>);
+<span class="var">$stmt</span>-><span class="fn">bind_param</span>(<span class="str">'i'</span>, <span class="var">$id</span>);
+<span class="var">$stmt</span>-><span class="fn">execute</span>();
+<span class="var">$row</span> = <span class="var">$stmt</span>-><span class="fn">get_result</span>()-><span class="fn">fetch_assoc</span>();
+<span class="var">$stmt</span>-><span class="fn">close</span>();
+
+<span class="cm">// SELECT multiple rows</span>
+<span class="var">$stmt</span> = <span class="var">$conn</span>-><span class="fn">prepare</span>(<span class="str">"SELECT * FROM orders WHERE status = ?"</span>);
+<span class="var">$stmt</span>-><span class="fn">bind_param</span>(<span class="str">'s'</span>, <span class="var">$status</span>);
+<span class="var">$stmt</span>-><span class="fn">execute</span>();
+<span class="var">$rows</span> = <span class="var">$stmt</span>-><span class="fn">get_result</span>()-><span class="fn">fetch_all</span>(MYSQLI_ASSOC);
+<span class="var">$stmt</span>-><span class="fn">close</span>();
+
+<span class="cm">// INSERT</span>
+<span class="var">$stmt</span> = <span class="var">$conn</span>-><span class="fn">prepare</span>(<span class="str">"INSERT INTO users (name, email) VALUES (?, ?)"</span>);
+<span class="var">$stmt</span>-><span class="fn">bind_param</span>(<span class="str">'ss'</span>, <span class="var">$name</span>, <span class="var">$email</span>);
+<span class="var">$stmt</span>-><span class="fn">execute</span>();
+<span class="var">$newId</span> = <span class="var">$stmt</span>-><span class="fn">insert_id</span>;
+<span class="var">$stmt</span>-><span class="fn">close</span>();
+
+<span class="cm">// UPDATE</span>
+<span class="var">$stmt</span> = <span class="var">$conn</span>-><span class="fn">prepare</span>(<span class="str">"UPDATE users SET name = ? WHERE id = ?"</span>);
+<span class="var">$stmt</span>-><span class="fn">bind_param</span>(<span class="str">'si'</span>, <span class="var">$name</span>, <span class="var">$id</span>);
+<span class="var">$stmt</span>-><span class="fn">execute</span>();
+<span class="var">$affected</span> = <span class="var">$stmt</span>-><span class="fn">affected_rows</span>;
+<span class="var">$stmt</span>-><span class="fn">close</span>();</code></pre>
+
+                <h3>bind_param Types</h3>
+                <table>
+                    <tr>
+                        <th>Char</th>
+                        <th>Type</th>
+                    </tr>
+                    <tr>
+                        <td>i</td>
+                        <td>integer</td>
+                    </tr>
+                    <tr>
+                        <td>s</td>
+                        <td>string</td>
+                    </tr>
+                    <tr>
+                        <td>d</td>
+                        <td>double / float</td>
+                    </tr>
+                    <tr>
+                        <td>b</td>
+                        <td>blob</td>
+                    </tr>
+                </table>
+
+                <h3>Dynamic Filters (WHERE builder)</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="var">$where</span>     = [<span class="str">'deleted = 0'</span>];
+<span class="var">$params</span>    = [];
+<span class="var">$types_str</span> = <span class="str">''</span>;
+
+<span class="kw">if</span> (<span class="var">$status</span> !== <span class="str">'all'</span>) {
+    <span class="var">$where</span>[]    = <span class="str">'status = ?'</span>;
+    <span class="var">$params</span>[]   = <span class="var">$status</span>;
+    <span class="var">$types_str</span> .= <span class="str">'s'</span>;
+}
+<span class="kw">if</span> (<span class="var">$customerId</span>) {
+    <span class="var">$where</span>[]    = <span class="str">'customer_id = ?'</span>;
+    <span class="var">$params</span>[]   = <span class="var">$customerId</span>;
+    <span class="var">$types_str</span> .= <span class="str">'i'</span>;
+}
+
+<span class="var">$params</span>[]   = <span class="var">$limit</span>;
+<span class="var">$params</span>[]   = <span class="var">$offset</span>;
+<span class="var">$types_str</span> .= <span class="str">'ii'</span>;
+
+<span class="var">$whereClause</span> = <span class="fn">implode</span>(<span class="str">' AND '</span>, <span class="var">$where</span>);
+<span class="var">$stmt</span> = <span class="var">$conn</span>-><span class="fn">prepare</span>(<span class="str">"SELECT * FROM orders WHERE {<span class="var">$whereClause</span>} LIMIT ? OFFSET ?"</span>);
+<span class="kw">if</span> (!<span class="fn">empty</span>(<span class="var">$params</span>)) { <span class="var">$stmt</span>-><span class="fn">bind_param</span>(<span class="var">$types_str</span>, ...<span class="var">$params</span>); }
+<span class="var">$stmt</span>-><span class="fn">execute</span>();</code></pre>
+
+                <h3>Supported Drivers</h3>
+                <table>
+                    <tr>
+                        <th>Driver</th>
+                        <th>Config value</th>
+                    </tr>
+                    <tr>
+                        <td>MySQL / MariaDB</td>
+                        <td>mysqli</td>
+                    </tr>
+                    <tr>
+                        <td>PostgreSQL</td>
+                        <td>pgsql</td>
+                    </tr>
+                    <tr>
+                        <td>SQL Server</td>
+                        <td>sqlsrv</td>
+                    </tr>
+                    <tr>
+                        <td>SQLite</td>
+                        <td>sqlite</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Services -->
+            <div class="section" id="services">
+                <h2>Services <a href="#services" class="anchor">#</a></h2>
+                <p>Services are static classes that handle business logic. No Request, no Response — just DB and logic.
+                    Controllers call services to stay thin.</p>
+                <div class="callout callout-green">See <code>services/SampleService.php</code> for a fully documented
+                    example with 7 common patterns.</div>
+
+                <h3>LogService</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="fn">require_once</span> __DIR__ . <span class="str">'/../../services/LogService.php'</span>;
+
+<span class="cl">LogService</span>::<span class="fn">login</span>(<span class="var">$conn</span>, <span class="var">$user</span>[<span class="str">'id'</span>], <span class="var">$ip</span>, <span class="var">$device</span>);
+<span class="cl">LogService</span>::<span class="fn">logout</span>(<span class="var">$conn</span>, <span class="var">$user</span>[<span class="str">'id'</span>]);
+<span class="cl">LogService</span>::<span class="fn">create</span>(<span class="var">$conn</span>, <span class="var">$user</span>[<span class="str">'id'</span>], <span class="str">'Created delivery DLV-001'</span>);
+<span class="cl">LogService</span>::<span class="fn">update</span>(<span class="var">$conn</span>, <span class="var">$user</span>[<span class="str">'id'</span>], <span class="str">'Updated cylinder ID 42'</span>);
+<span class="cl">LogService</span>::<span class="fn">delete</span>(<span class="var">$conn</span>, <span class="var">$user</span>[<span class="str">'id'</span>], <span class="str">'Deleted customer ID 7'</span>);
+<span class="cl">LogService</span>::<span class="fn">statusChange</span>(<span class="var">$conn</span>, <span class="var">$user</span>[<span class="str">'id'</span>], <span class="str">'Changed order to completed'</span>);
+<span class="cl">LogService</span>::<span class="fn">import</span>(<span class="var">$conn</span>, <span class="var">$user</span>[<span class="str">'id'</span>], <span class="str">'Imported 150 records'</span>);
+<span class="cl">LogService</span>::<span class="fn">purgeOlderThan</span>(<span class="var">$conn</span>, <span class="num">180</span>);  <span class="cm">// run from cron</span></code></pre>
+
+                <h3>LoginService</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="cl">LoginService</span>::<span class="fn">loginAttempt</span>(<span class="var">$conn</span>, <span class="var">$userId</span>);   <span class="cm">// increment (locks at 5)</span>
+<span class="cl">LoginService</span>::<span class="fn">resetAttempt</span>(<span class="var">$conn</span>, <span class="var">$userId</span>);   <span class="cm">// reset to 0 on success</span>
+<span class="cl">LoginService</span>::<span class="fn">isDisabled</span>(<span class="var">$user</span>);              <span class="cm">// true if locked</span>
+<span class="cl">LoginService</span>::<span class="fn">getIp</span>();                        <span class="cm">// detect real IP</span>
+<span class="cl">LoginService</span>::<span class="fn">getDevice</span>();                    <span class="cm">// parse User-Agent</span>
+<span class="cl">LoginService</span>::<span class="fn">saveLoginInfo</span>(<span class="var">$conn</span>, <span class="var">$userId</span>);  <span class="cm">// save IP + device to DB</span></code></pre>
+
+                <h3>MailService</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="cl">MailService</span>::<span class="fn">send</span>(
+    <span class="var">to</span>:      <span class="str">'user@example.com'</span>,
+    <span class="var">subject</span>: <span class="str">'Welcome!'</span>,
+    <span class="var">body</span>:    <span class="str">'&lt;h1&gt;Hello!&lt;/h1&gt;'</span>,
+    <span class="var">toName</span>:  <span class="str">'John Doe'</span>,
+);</code></pre>
+
+                <h3>PasswordResetService</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm">// Send 6-digit code to email</span>
+<span class="cl">PasswordResetService</span>::<span class="fn">sendCode</span>(<span class="var">$conn</span>, <span class="var">$usernameOrEmail</span>);
+
+<span class="cm">// Verify code</span>
+<span class="var">$valid</span> = <span class="cl">PasswordResetService</span>::<span class="fn">verifyCode</span>(<span class="var">$conn</span>, <span class="var">$usernameOrEmail</span>, <span class="var">$code</span>);
+
+<span class="cm">// Reset password</span>
+<span class="cl">PasswordResetService</span>::<span class="fn">resetPassword</span>(<span class="var">$conn</span>, <span class="var">$usernameOrEmail</span>, <span class="var">$code</span>, <span class="var">$newPassword</span>);
+
+<span class="cm">// Account activation</span>
+<span class="cl">PasswordResetService</span>::<span class="fn">sendActivation</span>(<span class="var">$conn</span>, <span class="var">$userId</span>);
+<span class="cl">PasswordResetService</span>::<span class="fn">activateAccount</span>(<span class="var">$conn</span>, <span class="var">$token</span>);
+<span class="cl">PasswordResetService</span>::<span class="fn">resendActivation</span>(<span class="var">$conn</span>, <span class="var">$usernameOrEmail</span>);</code></pre>
+            </div>
+
+            <!-- CLI -->
+            <div class="section" id="cli">
+                <h2>CLI Generator <a href="#cli" class="anchor">#</a></h2>
+                <p>Generate controller files from the terminal — no manual file creation needed.</p>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm"># Flat controller</span>
+php console.php gen:controller Orders
+
+<span class="cm"># Versioned + nested</span>
+php console.php gen:controller v1/auth/Login
+
+<span class="cm"># With specific methods</span>
+php console.php gen:controller v1/orders/Items --methods=list,create,update,delete
+
+<span class="cm"># Public endpoint — no auth middleware</span>
+php console.php gen:controller v1/auth/Forgot --no-auth
+
+<span class="cm"># Public with methods</span>
+php console.php gen:controller v1/auth/Forgot --no-auth --methods=forgot,reset,verify
+
+<span class="cm"># Overwrite existing</span>
+php console.php gen:controller v1/auth/Login --force
+
+<span class="cm"># Show help</span>
+php console.php list</code></pre>
+
+                <h3>HTTP Verb Auto-Detection</h3>
+                <table>
+                    <tr>
+                        <th>Method name</th>
+                        <th>HTTP verb</th>
+                    </tr>
+                    <tr>
+                        <td>list, index, show, find, get</td>
+                        <td><span class="method method-get">GET</span></td>
+                    </tr>
+                    <tr>
+                        <td>create, store, login, register, forgot, reset, verify</td>
+                        <td><span class="method method-post">POST</span></td>
+                    </tr>
+                    <tr>
+                        <td>update</td>
+                        <td><span class="method method-put">PUT</span></td>
+                    </tr>
+                    <tr>
+                        <td>delete, destroy</td>
+                        <td><span class="method method-delete">DELETE</span></td>
+                    </tr>
+                    <tr>
+                        <td>anything else</td>
+                        <td><span class="method method-get">GET</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Cron -->
+            <div class="section" id="cron">
+                <h2>Cron Jobs <a href="#cron" class="anchor">#</a></h2>
+                <p>Standalone PHP files in the <code>cron/</code> folder that connect directly to the DB and run
+                    scheduled tasks.</p>
+                <div class="callout callout-green">See <code>cron/sample_job.php</code> for a fully documented starting
+                    point.</div>
+
+                <h3>Basic Structure</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="kw"><?php</span>
+<span class="var">$config</span> = <span class="kw">require</span> __DIR__ . <span class="str">'/../config.php'</span>;
+<span class="var">$db</span>     = <span class="var">$config</span>[<span class="str">'databases'</span>][<span class="var">$config</span>[<span class="str">'db_default'</span>]];
+<span class="var">$conn</span>   = <span class="kw">new</span> <span class="cl">mysqli</span>(<span class="var">$db</span>[<span class="str">'host'</span>], <span class="var">$db</span>[<span class="str">'user'</span>], <span class="var">$db</span>[<span class="str">'password'</span>], <span class="var">$db</span>[<span class="str">'name'</span>], <span class="var">$db</span>[<span class="str">'port'</span>]);
+
+<span class="cm">// your job logic here</span>
+
+<span class="var">$conn</span>-><span class="fn">close</span>();</code></pre>
+
+                <h3>Schedule Format</h3>
+                <pre><button class="copy-btn">Copy</button><code>* * * * *
+| | | | └── Day of week  (0-7)
+| | | └──── Month        (1-12)
+| | └────── Day of month (1-31)
+| └──────── Hour         (0-23)
+└────────── Minute       (0-59)
+
+0 0 * * *     <span class="cm">daily at midnight</span>
+0 8 * * *     <span class="cm">daily at 8am</span>
+0 0 * * 0     <span class="cm">every Sunday</span>
+0 0 1 * *     <span class="cm">first day of month</span>
+*/30 * * * *  <span class="cm">every 30 minutes</span></code></pre>
+
+                <h3>Running on a Server</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm"># Run manually</span>
+php /path/to/api/cron/my_job.php
+
+<span class="cm"># Run with log output</span>
+php /path/to/api/cron/my_job.php >> /path/to/logs/my_job.log 2>&1</code></pre>
+
+                <div class="callout callout-yellow"><strong>Windows line endings:</strong> If you created the file on
+                    Windows and uploaded it to Linux, run <code>dos2unix /path/to/cron/my_job.php</code> before
+                    executing.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="section" id="email">
+                <h2>Email <a href="#email" class="anchor">#</a></h2>
+                <p>Raw PHP SMTP sockets — no Composer, no PHPMailer needed. Configure in <code>config.php</code> under
+                    the <code>mail</code> key.</p>
+
+                <h3>Common SMTP Providers</h3>
+                <table>
+                    <tr>
+                        <th>Provider</th>
+                        <th>Host</th>
+                        <th>Port</th>
+                    </tr>
+                    <tr>
+                        <td>Gmail</td>
+                        <td>smtp.gmail.com</td>
+                        <td>587</td>
+                    </tr>
+                    <tr>
+                        <td>Outlook</td>
+                        <td>smtp.office365.com</td>
+                        <td>587</td>
+                    </tr>
+                    <tr>
+                        <td>SendGrid</td>
+                        <td>smtp.sendgrid.net</td>
+                        <td>587</td>
+                    </tr>
+                    <tr>
+                        <td>Mailgun</td>
+                        <td>smtp.mailgun.org</td>
+                        <td>587</td>
+                    </tr>
+                    <tr>
+                        <td>Any host</td>
+                        <td>smtp.yourdomain.com</td>
+                        <td>587</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Logging -->
+            <div class="section" id="logging">
+                <h2>Logging <a href="#logging" class="anchor">#</a></h2>
+                <p>Only log write operations — never log GET or read requests.</p>
+                <table>
+                    <tr>
+                        <th>Action</th>
+                        <th>Log?</th>
+                    </tr>
+                    <tr>
+                        <td>Login / logout</td>
+                        <td style="color:var(--green)">✓ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Failed login attempts</td>
+                        <td style="color:var(--green)">✓ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Create, update, delete</td>
+                        <td style="color:var(--green)">✓ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Status changes</td>
+                        <td style="color:var(--green)">✓ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Import, backup</td>
+                        <td style="color:var(--green)">✓ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>GET / list / view</td>
+                        <td style="color:var(--red)">✗ No</td>
+                    </tr>
+                    <tr>
+                        <td>Dashboard metrics</td>
+                        <td style="color:var(--red)">✗ No</td>
+                    </tr>
+                    <tr>
+                        <td>Dropdown fetches</td>
+                        <td style="color:var(--red)">✗ No</td>
+                    </tr>
+                </table>
+                <div class="callout callout-yellow">Call <code>LogService::purgeOlderThan($conn, 180)</code> from a
+                    weekly cron job to delete logs older than 6 months and prevent table bloat.</div>
+            </div>
+
+            <!-- Deployment -->
+            <div class="section" id="deployment">
+                <h2>Deployment <a href="#deployment" class="anchor">#</a></h2>
+                <ol>
+                    <li>Upload all files to your server's API directory</li>
+                    <li>Set PHP to <strong>8.1 or higher</strong> in your server control panel</li>
+                    <li>Edit <code>config.php</code> — set database credentials, JWT secret, mail settings</li>
+                    <li>Enable HTTPS/SSL on your domain (required for secure cookies in production)</li>
+                    <li>Set <code>'debug' => false</code> and <code>'secure' => true</code> for production</li>
+                    <li>Test the API:</li>
+                </ol>
+                <pre><button class="copy-btn">Copy</button><code>curl -X POST https://yourdomain.com/api/v1/auth/login.php/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"yourpassword"}'</code></pre>
+
+                <h3>Apache</h3>
+                <p>The <code>.htaccess</code> is already configured — just make sure <code>mod_rewrite</code> is
+                    enabled.</p>
+
+                <h3>Nginx</h3>
+                <pre><button class="copy-btn">Copy</button><code>location /api/ {
+    try_files $uri $uri/ /api/index.php?x=$uri&$args;
+}</code></pre>
+
+                <h3>Environment Variables (optional)</h3>
+                <pre><button class="copy-btn">Copy</button><code><span class="str">'databases'</span> => [
+    <span class="str">'primary'</span> => [
+        <span class="str">'host'</span>     => <span class="fn">getenv</span>(<span class="str">'DB_HOST'</span>) ?: <span class="str">'localhost'</span>,
+        <span class="str">'name'</span>     => <span class="fn">getenv</span>(<span class="str">'DB_NAME'</span>) ?: <span class="str">'my_database'</span>,
+        <span class="str">'user'</span>     => <span class="fn">getenv</span>(<span class="str">'DB_USER'</span>) ?: <span class="str">'root'</span>,
+        <span class="str">'password'</span> => <span class="fn">getenv</span>(<span class="str">'DB_PASS'</span>) ?: <span class="str">''</span>,
+    ],
+],
+<span class="str">'jwt'</span> => [
+    <span class="str">'secret'</span> => <span class="fn">getenv</span>(<span class="str">'JWT_SECRET'</span>) ?: <span class="str">'fallback-dev-secret'</span>,
+],</code></pre>
+            </div>
+
+            <!-- Conventions -->
+            <div class="section" id="conventions">
+                <h2>Response Conventions <a href="#conventions" class="anchor">#</a></h2>
+                <pre><button class="copy-btn">Copy</button><code><span class="cm">// Success — list / data</span>
+<span class="var">$response</span>(<span class="var">$rows</span>, <span class="num">200</span>);
+
+<span class="cm">// Success — with message</span>
+<span class="var">$response</span>([<span class="str">'success'</span> => <span class="kw">true</span>, <span class="str">'message'</span> => <span class="str">'Done.'</span>], <span class="num">200</span>);
+
+<span class="cm">// Success — created</span>
+<span class="var">$response</span>([<span class="str">'success'</span> => <span class="kw">true</span>, <span class="str">'message'</span> => <span class="str">'Created.'</span>, <span class="str">'id'</span> => <span class="var">$newId</span>], <span class="num">201</span>);
+
+<span class="cm">// Pagination</span>
+<span class="var">$response</span>([<span class="str">'data'</span> => <span class="var">$rows</span>, <span class="str">'total'</span> => <span class="var">$total</span>, <span class="str">'page'</span> => <span class="var">$page</span>, <span class="str">'limit'</span> => <span class="var">$limit</span>], <span class="num">200</span>);
+
+<span class="cm">// Validation error (422)</span>
+<span class="var">$response</span>([<span class="str">'error'</span> => <span class="kw">true</span>, <span class="str">'message'</span> => <span class="var">$e</span>-><span class="fn">getErrors</span>()], <span class="num">422</span>);
+
+<span class="cm">// Not found (404)</span>
+<span class="var">$response</span>([<span class="str">'error'</span> => <span class="kw">true</span>, <span class="str">'message'</span> => <span class="str">'Record not found.'</span>], <span class="num">404</span>);
+
+<span class="cm">// Conflict (409)</span>
+<span class="var">$response</span>([<span class="str">'error'</span> => <span class="kw">true</span>, <span class="str">'message'</span> => <span class="str">'Email already exists.'</span>], <span class="num">409</span>);
+
+<span class="cm">// Server error (500)</span>
+<span class="var">$response</span>([<span class="str">'error'</span> => <span class="kw">true</span>, <span class="str">'message'</span> => <span class="var">$e</span>-><span class="fn">getMessage</span>()], <span class="num">500</span>);</code></pre>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Copy button
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const code = btn.nextElementSibling.innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+                });
+            });
+        });
+
+        // Scroll spy
+        const sections = document.querySelectorAll('.section[id], .section-hero[id]');
+        const links = document.querySelectorAll('.nav-link');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    links.forEach(l => l.classList.remove('active'));
+                    const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        sections.forEach(s => observer.observe(s));
+    </script>
+</body>
+
+</html>
