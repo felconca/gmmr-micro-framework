@@ -120,8 +120,9 @@ return [
         'same_site'     => 'Strict',
     ],
 
-    'db_default' => 'primary',
+    'db_default' => 'primary', // $this->db()
 
+    //Usage:  $this->db('primary');
     'databases' => [
         'primary' => [
             'driver'   => 'mysqli',    // mysqli | pgsql | sqlsrv | sqlite
@@ -139,7 +140,7 @@ return [
 
     'mail' => [
         'driver'     => 'smtp',
-        'host'       => 'smtp.hostinger.com',
+        'host'       => 'smtp.google.com',
         'port'       => 587,
         'encryption' => 'tls',
         'username'   => 'noreply@yourdomain.com',

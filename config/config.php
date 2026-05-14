@@ -30,7 +30,7 @@ return [
     'jwt' => [
         // Use a long random string — minimum 32 chars recommended.
         // Generate one with:  php -r "echo bin2hex(random_bytes(32));"
-        'secret'        => 'c26a03df5c593dc257559a6b9e7d81df39bc3b55046b1acb6245ea03214f0f9b',
+        'secret'        => '7f37f73bc55a5d9277c3f415166f2bfabc1698c5b858b45f69f32e60878411f7',
 
         'access_ttl'    => 900,        // access token lifetime  in seconds (15 min)
         'refresh_ttl'   => 604800,     // refresh token lifetime in seconds (7 days)
